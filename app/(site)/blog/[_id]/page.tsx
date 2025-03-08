@@ -116,12 +116,12 @@ import { JSX } from "react";
 
 interface PageProps {
   params: {
-    _id: string;
+    id: string;
   };
 }
 
 const SingleBlogPage = async ({ params }: PageProps): Promise<JSX.Element> => {
-  const blog = BlogData.find((blog) => blog._id.toString() === params._id);
+  const blog = BlogData.find((blog) => blog._id === Number(params.id));
 
   if (!blog) {
     return <div>Blog not found</div>;
