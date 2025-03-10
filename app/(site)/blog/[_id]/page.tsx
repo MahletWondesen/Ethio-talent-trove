@@ -1,9 +1,12 @@
+"use client";
 import BlogData from "@/components/Blog/blogData";
 import Image from "next/image";
-import { Blog } from "@/types/blog";
 
 const SingleBlogPage = ({ params }) => {
-  const blog = BlogData.find((blog) => blog._id === params._id);
+  const { _id } = params;
+  console.log("params", _id);
+  const blog = BlogData.find((blog) => blog._id && blog._id.toString() === _id);
+  console.log("blog", BlogData, blog);
 
   if (!blog) {
     return <div>Blog not found</div>;
@@ -70,13 +73,13 @@ const SingleBlogPage = ({ params }) => {
                     src={blog.mainImage}
                     width={350}
                     height={200}
-                    alt="image"
+                    alt="Additional view"
                   />
                   <Image
                     src="/images/blog/blog-02.png"
                     width={350}
                     height={200}
-                    alt="image"
+                    alt="Additional view"
                   />
                 </div>
 

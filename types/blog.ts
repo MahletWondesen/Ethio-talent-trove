@@ -7,7 +7,7 @@ export type Author = {
 };
 
 export type Blog = {
-  _id: any;
+  _id?: string | number;
   title: string;
   slug?: any;
   author?: string;
