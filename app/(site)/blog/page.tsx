@@ -4,10 +4,9 @@ import SectionHeader from "@/components/Common/SectionHeader";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog Page - Solid SaaS Boilerplate",
-
-  // other metadata
-  description: "This is Blog page for Solid Pro",
+  title: "Blog - Insights & Resources | Ethio TalentTrove",
+  description:
+    "Explore the latest insights, industry trends, and expert advice on talent acquisition, digital transformation, and business growth in Ethiopia – brought to you by Ethio TalentTrove.",
 };
 
 const BlogPage = async () => {

@@ -14,10 +14,9 @@ import Blog from "@/components/Blog";
 import Testimonial from "@/components/Testimonial";
 
 export const metadata: Metadata = {
-  title: "Next.js Starter Template for SaaS Startups - Solid SaaS Boilerplate",
-
-  // other metadata
-  description: "This is Home for Solid Pro",
+  title: "Ethio TalentTrove - Bridging Talent with Opportunity in Ethiopia",
+  description:
+    "Ethio TalentTrove connects exceptional talent with outstanding opportunities. Discover our recruitment, career counseling, and professional development services designed to empower Ethiopian businesses and professionals.",
 };
 
 export default function Home() {

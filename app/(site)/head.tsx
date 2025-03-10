@@ -1,9 +1,15 @@
 export default function Head() {
   return (
     <>
-      <title> Solid | Next.js Template for Startup and SaaS</title>
+      <title>
+        Ethio TalentTrove | Connecting Exceptional Talent with Outstanding
+        Opportunities
+      </title>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
-      <meta name="description" content="Built with Next.js and TypeScript" />
+      <meta
+        name="description"
+        content="Ethio TalentTrove bridges the gap between top talent and leading organizations in Ethiopia. Discover expert recruitment, career counseling, and professional development services designed to empower Ethiopian businesses and professionals."
+      />
       <link rel="icon" href="/images/favicon.ico" />
     </>
   );

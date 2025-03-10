@@ -4,10 +4,9 @@ import { Metadata } from "next";
 import FAQ from "@/components/FAQ";
 
 export const metadata: Metadata = {
-  title: "FAQs Page - Solid SaaS Boilerplate",
-
-  // other metadata
-  description: "This is Support page for Solid Pro",
+  title: "FAQs - Ethio TalentTrove",
+  description:
+    "Find answers to frequently asked questions about Ethio TalentTrove's recruitment services, career counseling, and professional development in Ethiopia.",
 };
 
 const SupportPage = () => {

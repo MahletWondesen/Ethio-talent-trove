@@ -3,10 +3,9 @@ import Contact from "@/components/Contact";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Support Page - Solid SaaS Boilerplate",
-
-  // other metadata
-  description: "This is Support page for Solid Pro"
+  title: "Support & Contact - Ethio TalentTrove",
+  description:
+    "Get in touch with Ethio TalentTrove for expert recruitment support, career counseling, and talent management services tailored for Ethiopian businesses.",
 };
 
 const SupportPage = () => {
