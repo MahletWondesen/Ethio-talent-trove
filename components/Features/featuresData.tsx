@@ -43,6 +43,20 @@ const featuresData: Feature[] = [
     description:
       "Employers can streamline their recruitment with automated screening and smart hiring tools.",
   },
+  {
+    id: 7,
+    icon: "/images/icon/icon-02.svg",
+    title: "Bid Service",
+    description:
+      "Leverage our bid service to access competitive project proposals and secure lucrative contracts with ease.",
+  },
+  {
+    id: 8,
+    icon: "/images/icon/icon-01.svg",
+    title: "Labor Outsourcing Service",
+    description:
+      "Expand your workforce quickly with our flexible labor outsourcing solutions, tailored to meet your project demands.",
+  },
 ];
 
 export default featuresData;

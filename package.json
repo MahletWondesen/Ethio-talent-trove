@@ -1,5 +1,6 @@
 {
-  "name": "solid-nextjs",
+  "name": "ethio-talent-trove",
+  "description": "Ethio Talent Trove is a platform that connects talented Ethiopians with opportunities.",
   "version": "0.3.0",
   "private": true,
   "scripts": {
