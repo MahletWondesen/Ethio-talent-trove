@@ -6,13 +6,13 @@ const Hero = () => {
     <section className="relative h-screen w-full">
       {/* Background Image */}
       <Image
-        src="/images/hero/two.png"
+        src="/images/hero/one.jpg"
         alt="Hero Background"
         layout="fill"
         objectFit="cover"
         objectPosition="center"
         priority={true}
-        className="-z-10 opacity-80"
+        className="-z-10  opacity-90 dark:opacity-90"
       />
 
       {/* Hero Content */}
