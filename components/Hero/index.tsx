@@ -6,7 +6,7 @@ const Hero = () => {
     <section className="relative h-screen w-full">
       {/* Background Image */}
       <Image
-        src="/images/hero/one.jpeg"
+        src="/images/hero/one.jpg"
         alt="Hero Background"
         layout="fill"
         objectFit="cover"
