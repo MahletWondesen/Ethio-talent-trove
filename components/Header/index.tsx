@@ -128,7 +128,7 @@ const Header = () => {
                         className={`dropdown ${dropdownToggler ? "flex" : ""}`}
                       >
                         {menuItem.submenu.map((item, key) => (
-                          <li key={key} className="hover:text-primary">
+                          <li key={key} className="hover:text-primary ">
                             <Link href={item.path || "#"}>{item.title}</Link>
                           </li>
                         ))}

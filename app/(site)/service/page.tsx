@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const servicePage = () => {
   return (
-    <div className="pb-20 pt-40">
+    <div className="pb-20 pt-10">
       <Feature />
     </div>
   );

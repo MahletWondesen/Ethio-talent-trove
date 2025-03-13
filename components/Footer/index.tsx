@@ -100,14 +100,14 @@ const Footer = () => {
                         Our Services
                       </a>
                     </li>
-                    {/* <li>
+                    <li>
                       <a
-                        href="#"
+                        href="/Careers"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         Careers
                       </a>
-                    </li> */}
+                    </li>
                     {/* <li>
                       <a
                         href="#"
@@ -166,14 +166,14 @@ const Footer = () => {
                         Our News
                       </a>
                     </li>
-                    {/* <li>
+                    <li>
                       <a
                         href="#"
                         className="mb-3 inline-block hover:text-primary"
                       >
                         Contact Us
                       </a>
-                    </li> */}
+                    </li>
                   </ul>
                 </motion.div>
 
