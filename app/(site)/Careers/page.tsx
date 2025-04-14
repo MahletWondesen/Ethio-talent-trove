@@ -91,14 +91,14 @@ export default function JobManagementPage() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mx-auto  mb-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto  mb-10 max-w-7xl bg-white p-6 px-4  shadow-md dark:bg-blacksection sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="rounded-lg bg-white p-6 shadow-md dark:bg-blacksection"
           >
-            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0 ">
               {/* Search Input */}
               <div className="flex-1">
                 <label htmlFor="search" className="sr-only">

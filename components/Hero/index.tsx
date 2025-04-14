@@ -14,6 +14,16 @@ const Hero = () => {
         priority={true}
         className="-z-10  opacity-100 dark:opacity-90"
       />
+      {/* <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute left-0 top-0 z-[-1] h-full w-full object-cover opacity-100 dark:opacity-90"
+      >
+        <source src="/images/ethio-hero-1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video> */}
 
       {/* Hero Content */}
       <div className="flex h-full items-center justify-center text-center">
