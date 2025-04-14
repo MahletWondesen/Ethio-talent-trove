@@ -29,7 +29,7 @@ export default function JobManagementPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   // Extract unique job types for categories
-  const categories = ["All", ...new Set(jobs.map(job => job.jobType))];
+  const categories = ["All", ...new Set(jobs.map((job) => job.jobType))];
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -55,29 +55,30 @@ export default function JobManagementPage() {
   // Filter jobs based on search term and category
   useEffect(() => {
     let results = jobs;
-    
+
     // Filter by category
     if (selectedCategory !== "All") {
-      results = results.filter(job => job.jobType === selectedCategory);
+      results = results.filter((job) => job.jobType === selectedCategory);
     }
-    
+
     // Filter by search term
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      results = results.filter(job => 
-        job.title.toLowerCase().includes(term) ||
-        job.company.toLowerCase().includes(term) ||
-        job.location.toLowerCase().includes(term) ||
-        job.description.toLowerCase().includes(term)
+      results = results.filter(
+        (job) =>
+          job.title.toLowerCase().includes(term) ||
+          job.company.toLowerCase().includes(term) ||
+          job.location.toLowerCase().includes(term) ||
+          job.description.toLowerCase().includes(term),
       );
     }
-    
+
     setFilteredJobs(results);
   }, [searchTerm, selectedCategory, jobs]);
 
   return (
     <>
-      <section className="py-20 lg:py-25 xl:py-30 mt-10">
+      <section className="mt-10 py-20 lg:py-25 xl:py-30">
         <div className="animate_top mx-auto mt-10 text-center">
           <SectionHeader
             headerInfo={{
@@ -90,12 +91,19 @@ export default function JobManagementPage() {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="mx-auto mb-10 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-lg bg-white p-6 shadow-md dark:bg-blacksection">
-            <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+        <div className="mx-auto  mb-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="rounded-lg bg-white p-6 shadow-md dark:bg-blacksection"
+          >
+            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
               {/* Search Input */}
               <div className="flex-1">
-                <label htmlFor="search" className="sr-only">Search jobs</label>
+                <label htmlFor="search" className="sr-only">
+                  Search jobs
+                </label>
                 <div className="relative">
                   <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                     <svg
@@ -121,10 +129,12 @@ export default function JobManagementPage() {
                   />
                 </div>
               </div>
-              
+
               {/* Category Filter */}
               <div className="w-full md:w-64">
-                <label htmlFor="category" className="sr-only">Filter by category</label>
+                <label htmlFor="category" className="sr-only">
+                  Filter by category
+                </label>
                 <select
                   id="category"
                   className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
@@ -139,16 +149,17 @@ export default function JobManagementPage() {
                 </select>
               </div>
             </div>
-            
+
             {/* Results count */}
             {!isLoading && (
               <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
-                Showing {filteredJobs.length} {filteredJobs.length === 1 ? "job" : "jobs"}
+                Showing {filteredJobs.length}{" "}
+                {filteredJobs.length === 1 ? "job" : "jobs"}
                 {selectedCategory !== "All" ? ` in ${selectedCategory}` : ""}
                 {searchTerm ? ` matching "${searchTerm}"` : ""}
               </p>
             )}
-          </div>
+          </motion.div>
         </div>
 
         {/* Loading Animation */}
@@ -174,7 +185,7 @@ export default function JobManagementPage() {
                   }}
                   className="absolute inset-0 rounded-full bg-blue-500"
                 ></motion.div>
-                
+
                 {/* Rotating dots */}
                 {[...Array(4)].map((_, i) => (
                   <motion.div
@@ -219,7 +230,7 @@ export default function JobManagementPage() {
         {!isLoading && (
           <div className="relative z-10 p-8">
             {filteredJobs.length === 0 ? (
-              <div className="text-center py-12">
+              <div className="py-12 text-center">
                 <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
                   No job openings match your criteria
                 </h3>
@@ -254,9 +265,14 @@ export default function JobManagementPage() {
                         </span>
                       </div>
                       <p className="text-gray-500 dark:text-gray-300">
-                        <span className="font-medium">Salary:</span> {job.salary}
+                        <span className="font-medium">Salary:</span>{" "}
+                        {job.salary}
                       </p>
-                      <p className={isExpired ? "text-red-500" : "text-green-500"}>
+                      <p
+                        className={
+                          isExpired ? "text-red-500" : "text-green-500"
+                        }
+                      >
                         <span className="font-medium">Closing Date:</span>{" "}
                         {closingDate.toLocaleDateString()}
                       </p>
@@ -271,7 +287,7 @@ export default function JobManagementPage() {
         {/* Job Details Modal */}
         {selectedJob && (
           <div
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
             onClick={() => setSelectedJob(null)}
           >
             <motion.div
@@ -321,7 +337,7 @@ export default function JobManagementPage() {
                   </div>
                 </div>
 
-                <div className="prose prose-gray max-w-none dark:prose-invert">
+                <div className="prose prose-gray dark:prose-invert max-w-none">
                   <p className="text-gray-700 dark:text-gray-300">
                     {selectedJob.description}
                   </p>
