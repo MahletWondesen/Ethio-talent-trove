@@ -22,8 +22,14 @@ interface Job {
 
 export default function JobManagementPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  // Extract unique job types for categories
+  const categories = ["All", ...new Set(jobs.map(job => job.jobType))];
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -34,6 +40,7 @@ export default function JobManagementPage() {
         );
         if (!data || !Array.isArray(data)) throw new Error("Invalid job data");
         setJobs(data);
+        setFilteredJobs(data);
       } catch (error) {
         console.error("Error fetching jobs:", error);
         alert("Failed to load job postings.");
@@ -44,6 +51,29 @@ export default function JobManagementPage() {
 
     fetchJobs();
   }, []);
+
+  // Filter jobs based on search term and category
+  useEffect(() => {
+    let results = jobs;
+    
+    // Filter by category
+    if (selectedCategory !== "All") {
+      results = results.filter(job => job.jobType === selectedCategory);
+    }
+    
+    // Filter by search term
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      results = results.filter(job => 
+        job.title.toLowerCase().includes(term) ||
+        job.company.toLowerCase().includes(term) ||
+        job.location.toLowerCase().includes(term) ||
+        job.description.toLowerCase().includes(term)
+      );
+    }
+    
+    setFilteredJobs(results);
+  }, [searchTerm, selectedCategory, jobs]);
 
   return (
     <>
@@ -57,6 +87,68 @@ export default function JobManagementPage() {
                 "Discover exciting career opportunities and join the leading talent hub in Ethiopia.",
             }}
           />
+        </div>
+
+        {/* Search and Filter Section */}
+        <div className="mx-auto mb-10 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-lg bg-white p-6 shadow-md dark:bg-blacksection">
+            <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+              {/* Search Input */}
+              <div className="flex-1">
+                <label htmlFor="search" className="sr-only">Search jobs</label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    id="search"
+                    className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+                    placeholder="Search jobs by title, company, or location"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              {/* Category Filter */}
+              <div className="w-full md:w-64">
+                <label htmlFor="category" className="sr-only">Filter by category</label>
+                <select
+                  id="category"
+                  className="block w-full rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            
+            {/* Results count */}
+            {!isLoading && (
+              <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+                Showing {filteredJobs.length} {filteredJobs.length === 1 ? "job" : "jobs"}
+                {selectedCategory !== "All" ? ` in ${selectedCategory}` : ""}
+                {searchTerm ? ` matching "${searchTerm}"` : ""}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Loading Animation */}
@@ -126,18 +218,18 @@ export default function JobManagementPage() {
         {/* Job Cards */}
         {!isLoading && (
           <div className="relative z-10 p-8">
-            {jobs.length === 0 ? (
+            {filteredJobs.length === 0 ? (
               <div className="text-center py-12">
                 <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
-                  No job openings available at the moment
+                  No job openings match your criteria
                 </h3>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">
-                  Check back later for new opportunities
+                  Try adjusting your search or filters
                 </p>
               </div>
             ) : (
               <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-                {jobs.map((job) => {
+                {filteredJobs.map((job) => {
                   const closingDate = new Date(job.closingDate);
                   const isExpired = closingDate < new Date();
 
@@ -156,9 +248,11 @@ export default function JobManagementPage() {
                       <p className="text-gray-600 dark:text-gray-400">
                         {job.company} - {job.location}
                       </p>
-                      <p className="text-gray-500 dark:text-gray-300">
-                        <span className="font-medium">Type:</span> {job.jobType}
-                      </p>
+                      <div className="my-2">
+                        <span className="inline-block rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                          {job.jobType}
+                        </span>
+                      </div>
                       <p className="text-gray-500 dark:text-gray-300">
                         <span className="font-medium">Salary:</span> {job.salary}
                       </p>
