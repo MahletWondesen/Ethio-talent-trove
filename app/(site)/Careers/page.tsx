@@ -23,10 +23,12 @@ interface Job {
 export default function JobManagementPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
+        setIsLoading(true);
         const { data } = await axios.get(
           "https://meron-backend.onrender.com/jobs/job-posting",
         );
@@ -35,6 +37,8 @@ export default function JobManagementPage() {
       } catch (error) {
         console.error("Error fetching jobs:", error);
         alert("Failed to load job postings.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -47,7 +51,7 @@ export default function JobManagementPage() {
         <div className="animate_top mx-auto mt-10 text-center">
           <SectionHeader
             headerInfo={{
-              title: " CARREER OPPORTUNITIES",
+              title: "CAREER OPPORTUNITIES",
               subtitle: "Looking for a Job?",
               description:
                 "Discover exciting career opportunities and join the leading talent hub in Ethiopia.",
@@ -55,43 +59,120 @@ export default function JobManagementPage() {
           />
         </div>
 
-        {/* Job Cards */}
-        <div className="relative z-10 p-8">
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {jobs.map((job) => {
-              const closingDate = new Date(job.closingDate);
-              const isExpired = closingDate < new Date();
-
-              return (
+        {/* Loading Animation */}
+        {isLoading && (
+          <div className="flex justify-center py-20">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center space-y-4"
+            >
+              <div className="relative h-16 w-16">
+                {/* Pulsing circle */}
                 <motion.div
-                  key={job._id}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="cursor-pointer rounded-lg bg-white p-4 shadow-md transition-transform hover:scale-[1.02] dark:bg-blacksection"
-                  onClick={() => setSelectedJob(job)}
-                >
-                  <h3 className="text-lg font-semibold text-black dark:text-white">
-                    {job.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {job.company} - {job.location}
-                  </p>
-                  <p className="text-gray-500 dark:text-gray-300">
-                    <span className="font-medium">Type:</span> {job.jobType}
-                  </p>
-                  <p className="text-gray-500 dark:text-gray-300">
-                    <span className="font-medium">Salary:</span> {job.salary}
-                  </p>
-                  <p className={isExpired ? "text-red-500" : "text-green-500"}>
-                    <span className="font-medium">Closing Date:</span>{" "}
-                    {closingDate.toLocaleDateString()}
-                  </p>
-                </motion.div>
-              );
-            })}
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.7, 1, 0.7],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute inset-0 rounded-full bg-blue-500"
+                ></motion.div>
+                
+                {/* Rotating dots */}
+                {[...Array(4)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="absolute inset-0"
+                  >
+                    <div
+                      className="absolute h-3 w-3 rounded-full bg-blue-600"
+                      style={{
+                        top: "0%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    ></div>
+                  </motion.div>
+                ))}
+              </div>
+              <motion.p
+                animate={{
+                  opacity: [0.6, 1, 0.6],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                }}
+                className="text-lg font-medium text-gray-600 dark:text-gray-400"
+              >
+                Loading opportunities...
+              </motion.p>
+            </motion.div>
           </div>
-        </div>
+        )}
+
+        {/* Job Cards */}
+        {!isLoading && (
+          <div className="relative z-10 p-8">
+            {jobs.length === 0 ? (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium text-gray-600 dark:text-gray-300">
+                  No job openings available at the moment
+                </h3>
+                <p className="mt-2 text-gray-500 dark:text-gray-400">
+                  Check back later for new opportunities
+                </p>
+              </div>
+            ) : (
+              <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+                {jobs.map((job) => {
+                  const closingDate = new Date(job.closingDate);
+                  const isExpired = closingDate < new Date();
+
+                  return (
+                    <motion.div
+                      key={job._id}
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8 }}
+                      className="cursor-pointer rounded-lg bg-white p-4 shadow-md transition-transform hover:scale-[1.02] dark:bg-blacksection"
+                      onClick={() => setSelectedJob(job)}
+                    >
+                      <h3 className="text-lg font-semibold text-black dark:text-white">
+                        {job.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {job.company} - {job.location}
+                      </p>
+                      <p className="text-gray-500 dark:text-gray-300">
+                        <span className="font-medium">Type:</span> {job.jobType}
+                      </p>
+                      <p className="text-gray-500 dark:text-gray-300">
+                        <span className="font-medium">Salary:</span> {job.salary}
+                      </p>
+                      <p className={isExpired ? "text-red-500" : "text-green-500"}>
+                        <span className="font-medium">Closing Date:</span>{" "}
+                        {closingDate.toLocaleDateString()}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Job Details Modal */}
         {selectedJob && (
