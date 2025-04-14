@@ -96,96 +96,139 @@ export default function JobManagementPage() {
         {/* Job Details Modal */}
         {selectedJob && (
           <div
-            className="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50 p-4 pt-30"
-            onClick={() => setSelectedJob(null)} // Close when clicking outside
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+            onClick={() => setSelectedJob(null)}
           >
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="relative w-full max-w-2xl rounded-lg bg-white p-6 shadow-xl dark:bg-blacksection"
-              onClick={(e) => e.stopPropagation()} // Prevent modal close on inner click
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              className="relative max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-xl bg-white p-8 shadow-2xl dark:bg-gray-900"
+              onClick={(e) => e.stopPropagation()}
             >
-              {/* <button
+              <button
                 onClick={() => setSelectedJob(null)}
-                className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
+                className="absolute right-6 top-6 text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-white"
+                aria-label="Close modal"
               >
-                ✕
-              </button> */}
-
-              <h3 className="text-xl font-bold text-black dark:text-white">
-                {selectedJob.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                {selectedJob.company} - {selectedJob.location}
-              </p>
-              <p className="text-gray-500 dark:text-gray-300">
-                <span className="font-medium">Type:</span> {selectedJob.jobType}
-              </p>
-              <p className="text-gray-500 dark:text-gray-300">
-                <span className="font-medium">Salary:</span>{" "}
-                {selectedJob.salary}
-              </p>
-              <p className="text-gray-500 dark:text-gray-300">
-                <span className="font-medium">Description:</span>{" "}
-                {selectedJob.description}
-              </p>
-
-              {selectedJob.requirements?.length && (
-                <div>
-                  <p className="font-medium">Requirements:</p>
-                  <ul className="list-disc pl-6 text-gray-500 dark:text-gray-300">
-                    {selectedJob.requirements.map((req, index) => (
-                      <li key={index}>{req}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {selectedJob.responsibilities?.length && (
-                <div>
-                  <p className="font-medium">Responsibilities:</p>
-                  <ul className="list-disc pl-6 text-gray-500 dark:text-gray-300">
-                    {selectedJob.responsibilities.map((res, index) => (
-                      <li key={index}>{res}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {selectedJob.benefits?.length && (
-                <div>
-                  <p className="font-medium">Benefits:</p>
-                  <ul className="list-disc pl-6 text-gray-500 dark:text-gray-300">
-                    {selectedJob.benefits.map((ben, index) => (
-                      <li key={index}>{ben}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {selectedJob.applyLink && (
-                <a
-                  href={selectedJob.applyLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 block text-blue-500 hover:underline"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  Apply Now
-                </a>
-              )}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
 
-              <p className="mt-4">
-                <span className="font-medium">Closing Date:</span>{" "}
-                <span
-                  className={
-                    new Date(selectedJob.closingDate) < new Date()
-                      ? "text-red-500"
-                      : "text-green-500"
-                  }
-                >
-                  {new Date(selectedJob.closingDate).toLocaleDateString()}
-                </span>
-              </p>
+              <div className="space-y-6">
+                <div className="border-b border-gray-200 pb-4 dark:border-gray-700">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {selectedJob.title}
+                  </h3>
+                  <p className="text-lg text-gray-600 dark:text-gray-300">
+                    {selectedJob.company} • {selectedJob.location}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-4">
+                    <span className="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      {selectedJob.jobType}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
+                      {selectedJob.salary}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="prose prose-gray max-w-none dark:prose-invert">
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {selectedJob.description}
+                  </p>
+                </div>
+
+                {selectedJob.requirements?.length && (
+                  <div>
+                    <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Requirements
+                    </h4>
+                    <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                      {selectedJob.requirements.map((req, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                          {req}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedJob.responsibilities?.length && (
+                  <div>
+                    <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Responsibilities
+                    </h4>
+                    <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                      {selectedJob.responsibilities.map((res, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                          {res}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {selectedJob.benefits?.length && (
+                  <div>
+                    <h4 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                      Benefits
+                    </h4>
+                    <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+                      {selectedJob.benefits.map((ben, index) => (
+                        <li key={index} className="flex items-start">
+                          <span className="mr-2 mt-1 inline-block h-1.5 w-1.5 rounded-full bg-purple-500"></span>
+                          {ben}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between border-t border-gray-200 pt-4 dark:border-gray-700">
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Posted:{" "}
+                      {new Date(selectedJob.postedDate).toLocaleDateString()}
+                    </p>
+                    <p
+                      className={
+                        new Date(selectedJob.closingDate) < new Date()
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }
+                    >
+                      Closing:{" "}
+                      {new Date(selectedJob.closingDate).toLocaleDateString()}
+                    </p>
+                  </div>
+                  {selectedJob.applyLink && (
+                    <a
+                      href={selectedJob.applyLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:bg-blue-700 dark:hover:bg-blue-800"
+                    >
+                      Apply Now
+                    </a>
+                  )}
+                </div>
+              </div>
             </motion.div>
           </div>
         )}
