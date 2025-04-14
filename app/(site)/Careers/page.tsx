@@ -77,7 +77,7 @@ export default function JobManagementPage() {
 
   return (
     <>
-      <section className="py-20 lg:py-25 xl:py-30">
+      <section className="py-20 lg:py-25 xl:py-30 mt-10">
         <div className="animate_top mx-auto mt-10 text-center">
           <SectionHeader
             headerInfo={{
